@@ -1,7 +1,7 @@
 
 #include "class_HestonModel_header.h"
 #include "class_PathSimulatorEuler2F_header.h"
-#include "class_Matrix_header.h"
+#include "../class_Matrix_header.h"
 #include <iostream>
 #include <fstream>
 #include <string>

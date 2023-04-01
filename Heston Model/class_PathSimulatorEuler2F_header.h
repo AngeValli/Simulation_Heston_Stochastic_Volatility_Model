@@ -1,7 +1,7 @@
 
 #ifndef CLASSPATHSIMULATOREULER2F_H
 #define CLASSPATHSIMULATOREULER2F_H
-#include "class_Matrix_header.h"
+#include "../class_Matrix_header.h"
 #include "class_Model2F_header.h"
 #include "class_Random_header.h"
 #include <vector>

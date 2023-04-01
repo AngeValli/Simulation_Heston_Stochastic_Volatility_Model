@@ -1,6 +1,6 @@
 
 #include "class_surface_vol_header.h"
-#include "class_Matrix_header.h"
+#include "../class_Matrix_header.h"
 #include <iostream>
 #include <fstream>
 #include <string>

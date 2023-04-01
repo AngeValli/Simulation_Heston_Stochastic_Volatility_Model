@@ -6,7 +6,7 @@
 #include <iostream>
 #include <math.h>
 #include <stdexcept>
-#include "class_Matrix_header.h"
+#include "../class_Matrix_header.h"
 
 
 

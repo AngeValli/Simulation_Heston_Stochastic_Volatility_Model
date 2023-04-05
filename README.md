@@ -29,7 +29,7 @@ $$
 
 ### Interpolation/Extrapolation along the strikes
 
-For each $ i \in [[ 1, M ]] $, we call the slice $(\sigma^* (T_i, K))_{K>0}$ the volatility smile at maturity $T_i$. As we only get a few points $\{ \sigma^* (T_i, K_1), ... , \sigma^* (T_i, K_N)\}$ from the market option prices, a first intuition would be to perform linear interpolation in between points.
+For each $i \in [[ 1, M ]]$, we call the slice $(\sigma^* (T_i, K))_{K>0}$ the volatility smile at maturity $T_i$. As we only get a few points $\{ \sigma^* (T_i, K_1), ... , \sigma^* (T_i, K_N)\}$ from the market option prices, a first intuition would be to perform linear interpolation in between points.
 
 A better idea is then to perform polynomial interpolation in between points as we need the implied volatility surface to be $C^{1,2}$, meaning once-differentiable towards the maturity variable T, and twice-differentiable towards the strike variable K.
 
@@ -40,7 +40,7 @@ Let's call $(x_j = K_j, y_j = \sigma^*(T_i, K_j))_{j \in [[ 1, N ]]}$ the set of
 $\forall j \in [[ 1, N-1 ]]$, we consider the cubic polynomial function $S_j$ defined on $[x_j, x_{j+1}]$ by :
 
 $$
-S_j(x) = \alpha_j(x - x_j)^3 + \Beta_j(x - x_j)^2 + \gamma_j(x - x_j) + \delta_j
+S_j(x) = \alpha_j(x - x_j)^3 + \beta_j(x - x_j)^2 + \gamma_j(x - x_j) + \delta_j
 $$
 
 The spline interpolation function is therefore the piecewise combination of those cubic polynomials :
@@ -52,7 +52,7 @@ $$
 
 Then, we use the conditions at points to find the 4 x (N-1) coefficients $\{ \alpha_j, \beta_j, \gamma_j, \delta_j \}$
 
-** Conditions at points $x_j$ **
+**Conditions at points $x_j$**
 
 Firstly, let's use the fact that the spline function contains all the points given by the market :
 
@@ -77,9 +77,11 @@ $$
 **Solving the conditions**
 
 We note $\Delta x_j = x_{j+1} - x_j$, so from the first condition we have
+
 $$
 \delta_j = y_j
 $$
+
 $$
 \alpha_j \Delta x³_j + \beta_j \Delta x²_j + \gamma_j \Delta x_j = y_{j+1} - y_j
 $$
@@ -89,6 +91,7 @@ And the second condition gives
 $$
 3 \alpha_j \Delta x²_j + 2 \beta_j \Delta x_j = \gamma_{j+1} - \gamma_{j}
 $$
+
 $$
 3 \alpha_j \Delta x_j = \beta_{j+1} - \beta_{j}
 $$
@@ -104,6 +107,7 @@ $$
 $$
 
 We can infer
+
 $$
 3 \alpha_j \Delta x^2_j = (\beta_{j+1} - \beta_{j}) \Delta x_j
 \implies \\
@@ -125,7 +129,7 @@ $$
 We obtain
 
 $$
-\forall j \in [[ 1, N-3 ]], \Beta_{j+2} \Delta x_{j+1} + 2 \beta_{j+1} (\Delta x_{j+1} + \Delta x_j) + \beta_j \Delta x_j = 3 \Bigg( \frac{y_{j+2} - y_{j+1}}{\Delta x_{j+1}} - \frac{y_{j+1} - y_j}{\Delta x_j} \Bigg)
+\forall j \in [[ 1, N-3 ]], \beta_{j+2} \Delta x_{j+1} + 2 \beta_{j+1} (\Delta x_{j+1} + \Delta x_j) + \beta_j \Delta x_j = 3 \Bigg( \frac{y_{j+2} - y_{j+1}}{\Delta x_{j+1}} - \frac{y_{j+1} - y_j}{\Delta x_j} \Bigg)
 $$
 
 Using conditions $\beta_1 = 0$ and $\alpha_{N-1} = - \frac{\beta_{N-1}}{3 \Delta x_{N-1}}$, we deduce

@@ -52,6 +52,9 @@
         "typeinfo": "cpp"
     },
     "cSpell.words": [
-        "CLASSHESTONMODEL"
+        "CLASSHESTONMODEL",
+        "Matricial",
+        "moneyness",
+        "pmatrix"
     ]
 }

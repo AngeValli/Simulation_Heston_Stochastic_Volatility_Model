@@ -11,10 +11,10 @@ Execute the following command in folder _Surface volatility from data_ or _Hesto
 to create executable file `main` and run it with `./main` in terminal.
 
 ## Implied Volatility Surface
-In the market, for each asset, we observe a matrix of call prices for a given set of strikes and set of maturities $\{C^{Mkt}(T_i, K_j) \}_{i \in \llbracket 1, N \rrbracket, j  \in \llbracket 1, N \rrbracket}$. Therefore, we can reverse the implied volatility matrix on the same set of strikes and maturities.
+In the market, for each asset, we observe a matrix of call prices for a given set of strikes and set of maturities $\{C^{Mkt}(T_i, K_j) \}_{i \in [[ 1, N ]], j  \in [[ 1, N ]]}$. Therefore, we can reverse the implied volatility matrix on the same set of strikes and maturities.
 
 $$
-\forall (i,j) \in \llbracket 1, M \rrbracket \text{x} \llbracket 1, N \rrbracket, \sigma^*(T_i, K_j) = C^{-1}_{T_i, K_j} (C^{Mkt}(T_i, K_j))
+\forall (i,j) \in [[ 1, M ]] \text{x} [[ 1, N ]], \sigma^*(T_i, K_j) = C^{-1}_{T_i, K_j} (C^{Mkt}(T_i, K_j))
 $$
 
 Then, we need to interpolate/extrapolate this volatility matrix to be able to request the implied volatility at any maturity and strike.
@@ -29,15 +29,15 @@ $$
 
 ### Interpolation/Extrapolation along the strikes
 
-For each $ i \in \llbracket 1, M \rrbracket $, we call the slice $(\sigma^* (T_i, K))_{K>0}$ the volatility smile at maturity $T_i$. As we only get a few points $\{ \sigma^* (T_i, K_1), ... , \sigma^* (T_i, K_N)\}$ from the market option prices, a first intuition would be to perform linear interpolation in between points.
+For each $ i \in [[ 1, M ]] $, we call the slice $(\sigma^* (T_i, K))_{K>0}$ the volatility smile at maturity $T_i$. As we only get a few points $\{ \sigma^* (T_i, K_1), ... , \sigma^* (T_i, K_N)\}$ from the market option prices, a first intuition would be to perform linear interpolation in between points.
 
 A better idea is then to perform polynomial interpolation in between points as we need the implied volatility surface to be $C^{1,2}$, meaning once-differentiable towards the maturity variable T, and twice-differentiable towards the strike variable K.
 
 Therefore, we use the **Natural Cubic Spline** approach.
 
-Let's call $(x_j = K_j, y_j = \sigma^*(T_i, K_j))_{j \in \llbracket 1, N \rrbracket}$ the set of points of the smile at maturity $T_i$.
+Let's call $(x_j = K_j, y_j = \sigma^*(T_i, K_j))_{j \in [[ 1, N ]]}$ the set of points of the smile at maturity $T_i$.
 
-$\forall j \in \llbracket 1, N-1 \rrbracket$, we consider the cubic polynomial function $S_j$ defined on $[x_j, x_{j+1}]$ by :
+$\forall j \in [[ 1, N-1 ]]$, we consider the cubic polynomial function $S_j$ defined on $[x_j, x_{j+1}]$ by :
 
 $$
 S_j(x) = \alpha_j(x - x_j)^3 + \Beta_j(x - x_j)^2 + \gamma_j(x - x_j) + \delta_j
@@ -57,7 +57,7 @@ Then, we use the conditions at points to find the 4 x (N-1) coefficients $\{ \al
 Firstly, let's use the fact that the spline function contains all the points given by the market :
 
 $$
-\forall j \in \llbracket 1, N-1 \rrbracket, S_j(x_j) = y_j \text{ and } S_j(x_{j+1}) = y_{j+1}
+\forall j \in [[ 1, N-1 ]], S_j(x_j) = y_j \text{ and } S_j(x_{j+1}) = y_{j+1}
 $$
 
 Which fills 2(N-1) conditions.
@@ -65,7 +65,7 @@ Which fills 2(N-1) conditions.
 Secondly, let's use the $C²$ property of the spline function :
 
 $$
-\forall j \in \llbracket 1, N-1 \rrbracket, S'_j(x_{j+1}) = S'_{j+1}(x_{j+1}) \text{ and } S''_j(x_{j+1}) = S''_{j+1}(x_{j+1})
+\forall j \in [[ 1, N-1 ]], S'_j(x_{j+1}) = S'_{j+1}(x_{j+1}) \text{ and } S''_j(x_{j+1}) = S''_{j+1}(x_{j+1})
 $$
 
 Which completes 2(N-2) conditions as well. Finally, there are 2 conditions left to make the system solvable. The most natural choice is to have **zero second order derivative** at extremities
@@ -125,7 +125,7 @@ $$
 We obtain
 
 $$
-\forall j \in \llbracket 1, N-3 \rrbracket, \Beta_{j+2} \Delta x_{j+1} + 2 \beta_{j+1} (\Delta x_{j+1} + \Delta x_j) + \beta_j \Delta x_j = 3 \Bigg( \frac{y_{j+2} - y_{j+1}}{\Delta x_{j+1}} - \frac{y_{j+1} - y_j}{\Delta x_j} \Bigg)
+\forall j \in [[ 1, N-3 ]], \Beta_{j+2} \Delta x_{j+1} + 2 \beta_{j+1} (\Delta x_{j+1} + \Delta x_j) + \beta_j \Delta x_j = 3 \Bigg( \frac{y_{j+2} - y_{j+1}}{\Delta x_{j+1}} - \frac{y_{j+1} - y_j}{\Delta x_j} \Bigg)
 $$
 
 Using conditions $\beta_1 = 0$ and $\alpha_{N-1} = - \frac{\beta_{N-1}}{3 \Delta x_{N-1}}$, we deduce
@@ -176,12 +176,12 @@ Let's denote A the squared tridiagonal symmetrical matrix of dimension (N-2), Z 
 
 This system is a typical application of the Thomas decomposition, given A is tridiagonal. The algorithm will be stable due to the fact that A is strictly diagonally dominant with real positive diagonal entries, therefore A is positive definite.
 
-This algorithm allows us to find the coefficients $(\beta_j)_{j \in \llbracket 1, N-1 \rrbracket}$, and therefore we can derive the coefficients $(\alpha_j)_{j \in \llbracket 1, N-1 \rrbracket}$ and $(\gamma_j)_{j \in \llbracket 1, N-1 \rrbracket}$
+This algorithm allows us to find the coefficients $(\beta_j)_{j \in [[ 1, N-1 ]]}$, and therefore we can derive the coefficients $(\alpha_j)_{j \in [[ 1, N-1 ]]}$ and $(\gamma_j)_{j \in [[ 1, N-1 ]]}$
 
 $$
 \alpha_j  =
 \begin{cases}
-  \alpha_j = \frac{\beta_{j+1} - \beta_j}{3 \Delta x_j} \text{ if } j \in \llbracket 1, N-2 \rrbracket \\
+  \alpha_j = \frac{\beta_{j+1} - \beta_j}{3 \Delta x_j} \text{ if } j \in [[ 1, N-2 ]] \\
   \alpha_{N-1} = - \frac{\beta_{N-1}}{3 \Delta x_{N-1}} \text{ if } j = N-1
 \end{cases}
 $$
@@ -250,7 +250,7 @@ K^{(i)} = K e^{\int^{T_i - T}_0 r(s) ds}\\
 K^{(i+1)} = K e^{\int^{T_{i+1} - T}_0 r(s) ds}
 $$
 
-6. All the quantities above are obtained thanks to the interpolation/extrapolation of all the smile functions at all maturities $\{T_i\}_{i \in \llbracket 1, M \rrbracket}$
+6. All the quantities above are obtained thanks to the interpolation/extrapolation of all the smile functions at all maturities $\{T_i\}_{i \in [[ 1, M ]]}$
 
 **Extrapolation along maturities**
 

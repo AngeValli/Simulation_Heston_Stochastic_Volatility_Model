@@ -180,7 +180,7 @@ Let's denote A the squared tridiagonal symmetrical matrix of dimension (N-2), Z 
 
 This system is a typical application of the Thomas decomposition, given A is tridiagonal. The algorithm will be stable due to the fact that A is strictly diagonally dominant with real positive diagonal entries, therefore A is positive definite.
 
-This algorithm allows us to find the coefficients $(\beta_j)_{j \in [[ 1, N-1 ]]}$, and therefore we can derive the coefficients $(\alpha_j)_{j \in [[ 1, N-1 ]]}$ and $(\gamma_j)_{j \in [[ 1, N-1 ]]}$
+This algorithm allows us to find the coefficients $(\beta_j)$ for all $j \in [[1,N-1]]$, and therefore we can derive the coefficients $(\alpha_j)$ and $(\gamma_j)$ as follows :
 
 $$
 \alpha_j  =
@@ -199,6 +199,7 @@ $$
 In the regions $K < K_1$ and $K > K_N$, we make the assumption of linear extrapolation (we prolongate the zero second-order derivative from the extreme points).
 
 We first compute the Left and Right Derivatives:
+
 $$
 \begin{cases}
   D_L = S'(x_1) = \gamma_1\\
@@ -209,16 +210,16 @@ $$
 The extrapolation formula in the tail regions become :
 
 $$
-\sigma^*(T_i, K) =
+\sigma^* (T_i, K) =
 \begin{cases}
-  \sigma^*(T_i, K_1) + D_L \text{ x } (K - K_1) \text{ if } K < K_1\\
-  \sigma^*(T_i, K_N) + D_R \text{ x } (K - K_N) \text{ if } K > K_N
+  \sigma^* (T_i, K_1) + D_L (K - K_1) \text{ if } K < K_1\\
+  \sigma^* (T_i, K_N) + D_R (K - K_N) \text{ if } K > K_N
 \end{cases}
 $$
 
 ### Interpolation/Extrapolation along the maturities
 
-The algorithm below assumes that all M smile functions $( \sigma^* (T_i, K))_{K \geq 0}$ have been computed by interpolation/extrapolation for all maturities $\{T_1, ..., T_M\}$ as done in the previous section.
+The algorithm below assumes that all M smile functions $( \sigma^{*} (T_i, K))_{K \geq 0}$ have been computed by interpolation/extrapolation for all maturities $\{T_1, ..., T_M\}$ as done in the previous section.
 
 **Interpolation along maturities**
 
@@ -234,17 +235,17 @@ K^{(i)} = k_{F_T} \text{ x } S_0 e^{\int^{T_i}_0 r(s) ds}\\
 K^{(i+1)} = k_{F_T} \text{ x } S_0 e^{\int^{T_{i+1}}_0 r(s) ds}
 $$
 
-3. We denote the variance quantity $v(T, k) = (\sigma^*)² (T,k \text{ x } S_0 e^{\int^T_0 r(s) ds}) \text{ x } T$
+3. We denote the variance quantity $v(T, k) = (\sigma^{*})² (T,k \text{ x } S_0 e^{\int^T_0 r(s) ds}) \text{ x } T$
 4. We get the value $v(T, k_{F_T})$ by linear interpolation of $v(T_i, k_{F_T})$ and $v(T_{i+1}, k_{F_T})$:
 
 $$
 v(T, k_{F_T}) = v(T_i, k_{F_T}) + \frac{v(T_{i+1}, k_{F_T}) - v(T_i, k_{F_T})}{T_{i+1} - T_i} \text{ x } (T - T_i)
 $$
 
-5. As a summary, the quantity $\sigma^*(T, K)$ is therefore computed by the following formula:
+5. As a summary, the quantity $\sigma^{*}(T, K)$ is therefore computed by the following formula:
 
 $$
-\sigma^*(T, K) = \sqrt{\frac{1}{T} \text{ x } \Bigg( (\sigma^*)²(T_i, K^{(i)})T_i + \frac{(\sigma^*)²(T_{i+1}, K^{(i+1)})T_{i+1} - (\sigma^*)²-(T_i, K^{(i)})T_i}{T_{i+1} - T_i} (T - T_i) \Bigg)}
+\sigma^* (T, K) = \sqrt{\frac{1}{T} \text{ x } \Bigg( ( \sigma^* )² (T_i, K^{(i)})T_i + \frac{( \sigma^* )² (T_{i+1}, K^{(i+1)})T_{i+1} - ( \sigma^* )²-(T_i, K^{(i)})T_i}{T_{i+1} - T_i} (T - T_i) \Bigg)}
 $$
 
 where
@@ -261,10 +262,10 @@ $$
 The extrapolation of the implied volatility surface outside the range of the market input maturities can be assumed to be constant, still following a same level of forward moneyness from the extreme maturities
 
 $$
-\sigma^*(T, K) =
+\sigma^* (T, K) =
 \begin{cases}
-  \sigma^*(T_1, K^{(1)}) \text{ if } T < T_1\\
-  \sigma^*(T_M, K^{(M)}) \text{ if } T > T_M
+  \sigma^* (T_1, K^{(1)}) \text{ if } T < T_1\\
+  \sigma^* (T_M, K^{(M)}) \text{ if } T > T_M
 \end{cases}
 $$
 

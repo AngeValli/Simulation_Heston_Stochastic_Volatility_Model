@@ -31,7 +31,7 @@ $$
 
 ## Interpolation/Extrapolation along the strikes
 
-For each $i \in [[ 1, M ]]$, we call the slice $(\sigma^* (T_i, K))_{K>0}$ the volatility smile at maturity $T_i$. As we only get a few points $\{ \sigma^* (T_i, K_1), ... , \sigma^* (T_i, K_N)\}$ from the market option prices, a first intuition would be to perform linear interpolation in between points.
+For each $i \in [[ 1, M ]]$, we call the slice $(\sigma^* (T_i, K))_{K>0}$ the volatility smile at maturity $T_i$. As we only get a few points $\\{ \sigma^* (T_i, K_1), ... , \sigma^* (T_i, K_N) \\}$ from the market option prices, a first intuition would be to perform linear interpolation in between points.
 
 A better idea is then to perform polynomial interpolation in between points as we need the implied volatility surface to be $C^{1,2}$, meaning once-differentiable towards the maturity variable T, and twice-differentiable towards the strike variable K.
 
@@ -52,7 +52,7 @@ $$
 $$
 
 
-Then, we use the conditions at points to find the 4 x (N-1) coefficients $\{ \alpha_j, \beta_j, \gamma_j, \delta_j \}$
+Then, we use the conditions at points to find the 4 x (N-1) coefficients $\\{ \alpha_j, \beta_j, \gamma_j, \delta_j \\}$
 
 **Conditions at points $x_j$**
 
@@ -178,7 +178,7 @@ $$
 \end{pmatrix}
 $$
 
-Let's denote A the squared tridiagonal symmetrical matrix of dimension (N-2), Z the unknown vector $\{Z_1 = \beta_2, ..., Z_{N-2} = \beta_{N-1}\}$ of size N-2 and $R = \{R_1, ..., R_{N-2}\}$ the right-hand side vector of the equation above.
+Let's denote A the squared tridiagonal symmetrical matrix of dimension (N-2), Z the unknown vector $\\{ Z_1 = \beta_2, ..., Z_{N-2} = \beta_{N-1} \\}$ of size N-2 and $R = \\{ R_1, ..., R_{N-2} \\}$ the right-hand side vector of the equation above.
 
 This system is a typical application of the Thomas decomposition, given A is tridiagonal. The algorithm will be stable due to the fact that A is strictly diagonally dominant with real positive diagonal entries, therefore A is positive definite.
 
@@ -221,7 +221,7 @@ $$
 
 ## Interpolation/Extrapolation along the maturities
 
-The algorithm below assumes that all M smile functions $( \sigma^{*} (T_i, K))_{K \geq 0}$ have been computed by interpolation/extrapolation for all maturities $\{T_1, ..., T_M\}$ as done in the previous section.
+The algorithm below assumes that all M smile functions $( \sigma^{*} (T_i, K))_{K \geq 0}$ have been computed by interpolation/extrapolation for all maturities $\\{ T_1, ..., T_M \\}$ as done in the previous section.
 
 **Interpolation along maturities**
 
@@ -257,7 +257,7 @@ K^{(i)} = K e^{\int^{T_i - T}_0 r(s) ds}\\
 K^{(i+1)} = K e^{\int^{T_{i+1} - T}_0 r(s) ds}
 $$
 
-6. All the quantities above are obtained thanks to the interpolation/extrapolation of all the smile functions at all maturities $\{T_i\}_{i \in [[ 1, M ]]}$
+6. All the quantities above are obtained thanks to the interpolation/extrapolation of all the smile functions at all maturities $(T_i)_{i \in [[ 1, M ]]}$
 
 **Extrapolation along maturities**
 
@@ -294,7 +294,7 @@ $$
 
 The price $X(t)$ does not have a drift term as we consider the price to be actualized. The variance process $V(t)$ verifies a Cox-Ingersoll-Ross (CIR) diffusion. The parameters $\kappa$, $\theta$ and $\epsilon$ are strictly positive values. $\theta$ is called the long variance, or long-run average variance of the price (it corresponds to the expected value of $V(t)$ at infinity) ; $\kappa$ is the speed of adjustment to the mean $\theta$, so the rate at which $V(t)$ reverts to $\theta$ and $\epsilon$ represents the volatility of volatility, determining the variance of $V(t)$.
 
-We consider a probability space $(\Omega, \mathcal{F}, \mathbb{P}, (\mathcal{F_{t \geq 0}}))$ and the price process is a $\mathcal{F}$-$\mathbb{P}$-martingale.
+We consider a probability space $(\Omega, \mathcal{F}, \mathbb{P}, (\mathcal{F_{t \geq 0}}))$ and the price process is a $\mathcal{F}$ - $\mathbb{P}$ - martingale.
 
 The conditional law followed by $V(T)|V(t)$ with $T \geq t$ and $t$ fixed is a decentralized $\chi^2$ law. As we know the distribution function of such a law, theoretically, we can simulate a variance process by incrementing from the initial value $V(0)$ and by inverting from the distribution function.
 
@@ -312,7 +312,7 @@ $$
 
 ## Euler Simulation
 
-We consider subdivisions of the interval $[0, T]$ into subintervals of length  $\frac{T}{N}$ and for $k \in \llbracket 0, N \rrbracket$ we consider $t_k = \frac{kT}{N}$.
+We consider subdivisions of the interval $[0, T]$ into subintervals of length  $\frac{T}{N}$ and for $k \in [[ 0, N ]]$ we consider $t_k = \frac{kT}{N}$.
 
 We denote $X^e(t)$ and $V^e(t)$ the approximations of the process $X(t)$ and $V(t)$ by the Euler schema, defined as follows :
 
@@ -338,7 +338,7 @@ Parameters : $V(0) == 4%$, $x == 50%$ and $\epsilon == 100%$
 
 The truncated gaussian distribution and the log-normal distribution have been calibrated from moments of the exact distribution of $V(T)$. [1]
 
-The log-normal distribution underestimates the weight around the origin $V(0)$ of the distribution $(V(t))_{t \in \llbracket 0,T \rrbracket}$ while the truncated gaussian distribution overestimates this weight.
+The log-normal distribution underestimates the weight around the origin $V(0)$ of the distribution $(V(t))_{t \in [[ 0,T ]]}$ while the truncated gaussian distribution overestimates this weight.
 
 Furthermore, the density function of the decentralized $\chi^2$ law is determined :
 
@@ -367,13 +367,9 @@ $$
 
 where $\gamma_1 = \gamma_2 = \frac{1}{2}$ or $\gamma_1 = 1$ and $\gamma_2 = 0$.
 
-#
-
-*** In the paper, a martingale correction is proposed. A further version of this projet will implement it. The martingale correction consists in generating a martingale process in the QE simulation which enable to have consistant prices regarding the prices observed on the market ***
+***In the paper, a martingale correction is proposed. A further version of this projet will implement it. The martingale correction consists in generating a martingale process in the QE simulation which enable to have consistant prices regarding the prices observed on the market***
 
 Other simulation methods are also implemented in the paper : the Kahl-Jackel schema, the Broadie-Kaya schema, but not implemented here yet.
-
-#
 
 # Monte-Carlo pricer and greeks simulations
 
@@ -395,20 +391,20 @@ This method consits in using the relationship $Z = (S_T - K)_+ - b(S_T - e^{rT}S
 
 $$
 \begin{cases}
-\mathbb{E}(Z) &= \mathbb{E}((S_T - K)_+)
+\mathbb{E}[Z] &= \mathbb{E}[(S_T - K)_+]
 \\
 Var(Z) &= Var((S_T - K)_+) + b² Var(S_T) - 2 b Cov((S_T - K)_+, S_T)
 \end{cases}
 $$
 
-We optimize those expressions with respect to b, so we obtain :
+We optimize those expressions with respect to $b$, so we obtain :
 
 $$
 b^* = \frac{Cov((S_T - K)_+, S_T)}{Var(S_T)} \implies
 Var(Z)^* = Var((S_T - K)_+)(1 - \sigma_{(S_T - K)_+, S_T})
 $$
 
-We need the expressions for $Cov((S_T - K)_+, S_T)$ and $Var(S_T)$. For this, we use an independent sample for the computation of b^* to avoid the introduction of a bias in the price of the call. This is implemented in the method *call_price_regression* of the class _HestonQECallPricer_.
+We need the expressions for $Cov((S_T - K)_+, S_T)$ and $Var(S_T)$. For this, we use an independent sample for the computation of $b^*$ to avoid the introduction of a bias in the price of the call. This is implemented in the method *call_price_regression* of the class _HestonQECallPricer_.
 
 In addition, we use the library _OpenMP_ for the distribution of the computation and the parallelisation of the code.
 
@@ -440,15 +436,21 @@ So the variance reduces with higher values of $h_i$, and the truncation error is
 
 ### Automatic differentiation
 
-Automatic differentiation is a technique of numerical differentiation to remove the truncation error by explicitly expressing all the derivatives. For $x$ the vector of parameters in the Heston model, the price of the call is $C(x) = \mathbb{E}(e^{rT}(S_T(x) - K)_+)$. The option price $S_T$ has a null mass function and $x \longmapsto (S_T(x) - K)_+$ is continuous, so locally bounded, so on intervals we obtain :
+Automatic differentiation is a technique of numerical differentiation to remove the truncation error by explicitly expressing all the derivatives. For $x$ the vector of parameters in the Heston model, the price of the call is :
 
 $$
-\partial_j C(x) = \mathbb{E}(e^{-rT} \partial_j S_T \mathbb{1}_{(S_T - K)_+ > 0})
+C(x)=\mathbb{E}[e^{rT}(S_T(x)-K)_+]
+$$
+
+The option price $S_T$ has a null mass function and $x \longmapsto (S_T(x)-K)_+$ is continuous, so locally bounded, so on intervals we obtain :
+
+$$
+\partial_j C(x) = \mathbb{E}[e^{-rT} \partial_j S_T \mathbb{1}_{(S_T - K)_+ > 0}]
 \\
-\implies \partial_j \hat{C}(x) = \frac{1}{N} \sum^N_{i=1} e^{rT} \partial_j S^i_T(x) \mathbb{1}_{S^i_T - K)_+ > 0}
+\implies \partial_j \hat{C}(x) = \frac{1}{N} \sum^N_{i=1} e^{rT} \partial_j S^i_T(x) \mathbb{1}_{(S^i_T - K)_+ > 0}
 $$
 
-S^i_T(x) is simulated by :
+$S^i_T(x)$ is simulated by :
 
 $$
 S_{t_{i+1}}(x) = G(x, S_{t_i}(x), V_{t_{i+1}}(x), V_{t_i}(x))
@@ -462,10 +464,9 @@ $$
 
 The automatic differentiation consists in the diffusion of $(S_t(x), \nabla_x S_t(x), V_t(x), \nabla_x V_t(x)$ with the chosen schema. This method are implemented through the classes _HestonQEHelper_ and _PointSimulatorHestonQE_.
 
-The class _HestonQEHelper_ contains all the methods to compute the explicit derivatives and the class _PointSimulatorHestonQE_ contains the method *multi_state_simulation_multi_thread* to diffuse $(S_t(x), \nabla_x S_t(x), V_t(x), \nabla_x V_t(x)$. After several tests, this schema seems instable as we obtain diverging gradients. We did not find literature on the stability of those methods, so it might be instable intrinsically. **Code needs to be reviewed and analytical computations as well**.
+The class _HestonQEHelper_ contains all the methods to compute the explicit derivatives and the class _PointSimulatorHestonQE_ contains the method *multi_state_simulation_multi_thread* to diffuse $(S_t(x), \nabla_x S_t(x), V_t(x), \nabla_x V_t(x)$. After several tests, this schema seems unstable as we obtain diverging gradients. We did not find literature on the stability of those methods, so it might be unstable intrinsically. **Code needs to be reviewed and analytical computations as well**.
 
 ## Constraints optimization
-
 
 The calibration of the implied volatility surface is a constraints optimization problem and can be expressed as a convex optimization problem :
 
@@ -476,7 +477,7 @@ $$
 where $L(\cdot)$ is the convex cost function from previous section and $K$ is the convex defined by :
 
 $$
-K := \{v \in \mathbb{R}^4 | v_1 \geq 0, v_2 \geq 0, v_3 \geq 0, -1 \leq v_4 \leq 1, v²_3 - 2 v_1 v_2 \leq 0\}
+K := \\{ v \in \mathbb{R}^4 | v_1 \geq 0, v_2 \geq 0, v_3 \geq 0, -1 \leq v_4 \leq 1, v²_3 - 2 v_1 v_2 \leq 0 \\}
 $$
 
 $K$ is convex by the intersection of convex half-spaces.
@@ -511,9 +512,9 @@ where $F(\cdot)$ is the application defined by the constraints of the primal for
 In this new optimization problem, we look for a saddle point of $\mathcal{L}(\cdot)$ and we have $\lambda > 0$. Therefore, the optimization problem under the dual form is a simpler problem than the previous one. The primal form requires a solution in the non-trivial convex space $K$ while the dual form has a solution on a simple half-space where the projection operator can be characterized trivially. The projected gradient algorithm is more adapted in this context. The process consists of the following steps :
 
 * We compute $g(\lambda) = \inf_{v} \mathcal{L}(v, \lambda)$. $\mathcal{L}(\cdot)$ being convex, the optimal conditions are when its gradient is equal to 0 (Euler condition). We can find it by simple gradient descent.
-* Once $v_{\lambda}$ is computed, we consider $g(\cdot)$ and we minimise $- g(\cdot)$ by applying the projected gradient on the half-space $\mathbb{R}⁴_+$. One $\lambda^*$ is computed, this quantity is injected in the formula of $x_{\lambda}$ and we obtain $x_{\lambda^*} = x^*$.
+* Once $v_{\lambda}$ is computed, we consider $g(\cdot)$ and we minimise $- g(\cdot)$ by applying the projected gradient on the half-space $\mathbb{R}^4_+$. Once $\lambda^*$ is computed, the quantity is injected in the formula of $x_{\lambda}$.
 
-The gradient of the Lagrangian is given by :
+The result is denoted $x^*$. The gradient of the Lagrangian is given by :
 
 $$
 \nabla_v \mathcal{L}(v, p) = \nabla_v \mathcal{L}(v) + \nabla_v <p, F(v)>

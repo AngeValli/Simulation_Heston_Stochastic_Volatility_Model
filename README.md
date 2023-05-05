@@ -59,22 +59,22 @@ Then, we use the conditions at points to find the 4 x (N-1) coefficients $\\{ \a
 Firstly, let's use the fact that the spline function contains all the points given by the market :
 
 $$
-\forall j \in [[ 1, N-1 ]], S_j(x_j) = y_j \text{ and } S_j(x_{j+1}) = y_{j+1}
+\forall j \in [[ 1, N-1 ]], S_{j} (x_j) = y_{j} \text{ and } S_{j} (x_{j+1}) = y_{j+1}
 $$
 
 Which fills 2(N-1) conditions.
 
 Secondly, let's use the $C²$ property of the spline function :
 
-$$
-\forall j \in [[ 1, N-1 ]], S'_j(x_{j+1}) = S'_{j+1}(x_{j+1}) \text{ and } S''_j(x_{j+1}) = S''_{j+1}(x_{j+1})
-$$
+```math
+\forall j \in [[ 1, N-1 ]], S^{'}_{j} (x_{j+1}) = S^{'}_{j+1} (x_{j+1}) \text{ and } S^{''}_{j} (x_{j+1}) = S^{''}_{j+1} (x_{j+1})
+```
 
 Which completes 2(N-2) conditions as well. Finally, there are 2 conditions left to make the system solvable. The most natural choice is to have **zero second order derivative** at extremities
 
-$$
-S''_1(x_1) = S''_{N-1}(x_N) = 0
-$$
+```math
+S^{''}_{1} (x_1) = S^{''}_{N-1} (x_N) = 0
+```
 
 **Solving the conditions**
 
@@ -202,12 +202,12 @@ In the regions $K < K_1$ and $K > K_N$, we make the assumption of linear extrapo
 
 We first compute the Left and Right Derivatives:
 
-$$
+```math
 \begin{cases}
   D_L = S'(x_1) = \gamma_1\\
   D_R = S'_{N-1}(x_N) = 3 \alpha_{N-1} \Delta x²_{N-1} + 2 \beta_{N-1} \Delta x_{N-1} + \gamma_{N-1} 
 \end{cases}
-$$
+```
 
 The extrapolation formula in the tail regions become :
 
@@ -232,10 +232,10 @@ For a given maturity $T \in [T_i, T_{i+1}]$ and any strike $K$
 1. We compute the forward moneyness level: $k_{F_T} = \frac{K}{F_T} = \frac{K}{S_0} e^{- \int^T_0 r(s) ds}$
 2. We extract the strikes $K^{(i)}$ and $K^{(i+1)}$ corresponding to that forward moneyness for maturities $T_i$ and $T_{i+1}$:
 
-$$
+```math
 K^{(i)} = k_{F_T} \text{ x } S_0 e^{\int^{T_i}_0 r(s) ds}\\
 K^{(i+1)} = k_{F_T} \text{ x } S_0 e^{\int^{T_{i+1}}_0 r(s) ds}
-$$
+```
 
 3. We denote the variance quantity $v(T, k) = (\sigma^{*})² (T,k \text{ x } S_0 e^{\int^T_0 r(s) ds}) \text{ x } T$
 4. We get the value $v(T, k_{F_T})$ by linear interpolation of $v(T_i, k_{F_T})$ and $v(T_{i+1}, k_{F_T})$:
@@ -246,16 +246,16 @@ $$
 
 5. As a summary, the quantity $\sigma^{*}(T, K)$ is therefore computed by the following formula:
 
-$$
+```math
 \sigma^* (T, K) = \sqrt{\frac{1}{T} \text{ x } \Bigg( ( \sigma^* )² (T_i, K^{(i)})T_i + \frac{( \sigma^* )² (T_{i+1}, K^{(i+1)})T_{i+1} - ( \sigma^* )²-(T_i, K^{(i)})T_i}{T_{i+1} - T_i} (T - T_i) \Bigg)}
-$$
+```
 
 where
 
-$$
+```math
 K^{(i)} = K e^{\int^{T_i - T}_0 r(s) ds}\\
 K^{(i+1)} = K e^{\int^{T_{i+1} - T}_0 r(s) ds}
-$$
+```
 
 6. All the quantities above are obtained thanks to the interpolation/extrapolation of all the smile functions at all maturities $(T_i)_{i \in [[ 1, M ]]}$
 
@@ -263,20 +263,20 @@ $$
 
 The extrapolation of the implied volatility surface outside the range of the market input maturities can be assumed to be constant, still following a same level of forward moneyness from the extreme maturities
 
-$$
+```math
 \sigma^* (T, K) =
 \begin{cases}
   \sigma^* (T_1, K^{(1)}) \text{ if } T < T_1\\
   \sigma^* (T_M, K^{(M)}) \text{ if } T > T_M
 \end{cases}
-$$
+```
 
 where
 
-$$
+```math
 K^{(1)} = K e^{\int^{T_1 - T}_0 r(s) ds}\\
 K^{(M)} = K e^{\int^{T_M - T}_0 r(s) ds}
-$$
+```
 
 # Simulation in the Heston model
 
@@ -389,20 +389,20 @@ A first method to reduce the variance consists in using the call-put parity to p
 
 This method consits in using the relationship $Z = (S_T - K)_+ - b(S_T - e^{rT}S_0)$ where $S_T$ is a martingale under risk neutral probability, where the expectation and variance of $Z$ are :
 
-$$
+```math
 \begin{cases}
 \mathbb{E}[Z] &= \mathbb{E}[(S_T - K)_+]
 \\
 Var(Z) &= Var((S_T - K)_+) + b² Var(S_T) - 2 b Cov((S_T - K)_+, S_T)
 \end{cases}
-$$
+```
 
 We optimize those expressions with respect to $b$, so we obtain :
 
-$$
+```math
 b^* = \frac{Cov((S_T - K)_+, S_T)}{Var(S_T)} \implies
 Var(Z)^* = Var((S_T - K)_+)(1 - \sigma_{(S_T - K)_+, S_T})
-$$
+```
 
 We need the expressions for $Cov((S_T - K)_+, S_T)$ and $Var(S_T)$. For this, we use an independent sample for the computation of $b^*$ to avoid the introduction of a bias in the price of the call. This is implemented in the method *call_price_regression* of the class _HestonQECallPricer_.
 
@@ -418,9 +418,9 @@ $$
 
 Then, the gradient of the loss function is :
 
-$$
+```math
 \nabla L(x) = \sum^N_{i=1} 2 (\sigma_{impli}(C_i(x)) - \sigma^*_i) \frac{d \sigma_{impli}}{dC} \nabla_x C
-$$
+```
 
 It is necessary to correctly compute the gradient of the greeks, i.e with the minimum variance to guarantee the convergence of the optimisation algorithm.
 
